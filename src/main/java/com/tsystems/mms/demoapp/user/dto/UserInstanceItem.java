@@ -69,15 +69,6 @@ public class UserInstanceItem {
         this.unitId = unitId;
     }
 
-    public UserInstanceItem(Long id, String email, String first_name, String surname, String gender, Long unitId) {
-        this.id = id;
-        this.email = email;
-        this.first_name = first_name;
-        this.surname = surname;
-        this.gender = gender;
-        this.unitId = unitId;
-    }
-
     public UserInstanceItem() {
     }
 
