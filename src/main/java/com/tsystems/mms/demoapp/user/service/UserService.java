@@ -5,12 +5,15 @@ import com.tsystems.mms.demoapp.user.dto.UserCreateCommand;
 import com.tsystems.mms.demoapp.user.dto.UserInstanceItem;
 import com.tsystems.mms.demoapp.user.dto.UserModifyCommand;
 import com.tsystems.mms.demoapp.user.enums.Gender;
+import com.tsystems.mms.demoapp.user.exception.InvalidEmailException;
 import com.tsystems.mms.demoapp.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * This service manages all user.
@@ -46,7 +49,7 @@ public class UserService {
 
     public UserInstanceItem modifyUser(UserModifyCommand command) {
         User user = userRepository.findById(command.getId()).orElseThrow(EntityNotFoundException::new);
-        if (command.getEmail() != null) {
+        if (command.getEmail() != null && isEmailValid(command.getEmail())) {
             user.setEmail(command.getEmail());
         }
         if (command.getFirst_name() != null) {
@@ -63,5 +66,12 @@ public class UserService {
 
     public void deleteUserById(Long id) {
         userRepository.deleteById(id);
+    }
+
+    public boolean isEmailValid(String email) {
+        String regex = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
     }
 }

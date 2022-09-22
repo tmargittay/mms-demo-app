@@ -1,6 +1,7 @@
 package com.tsystems.mms.demoapp.user;
 
 import com.tsystems.mms.demoapp.user.domain.User;
+import com.tsystems.mms.demoapp.user.enums.Gender;
 import com.tsystems.mms.demoapp.user.repository.UserRepository;
 import com.tsystems.mms.demoapp.user.service.UserService;
 import org.junit.jupiter.api.Assertions;
@@ -33,7 +34,6 @@ public class UserServiceTest {
 
   @Test
   void testGetAll () {
-
     // Mock
     Mockito.when(userRepository.findAll()).thenReturn(testUsers);
 
@@ -48,6 +48,18 @@ public class UserServiceTest {
 
   }
 
+  @Test
+  void testEmailValidation(){
+    User user1good = new User(1L,"test1@gmail.com","Tomi","Margittay", Gender.MALE);
+    User user2good = new User(2L,"test2@gmail.com","Tomi","Margittay", Gender.MALE);
+    User user3wrong = new User(3L,"test3gmail.com","Tomi","Margittay", Gender.MALE);
+    User user4wrong = new User(4L,"test4@gmailcom","Tomi","Margittay", Gender.MALE);
+
+    Assertions.assertTrue(userService.isEmailValid(user1good.getEmail()));
+    Assertions.assertTrue(userService.isEmailValid(user2good.getEmail()));
+    Assertions.assertFalse(userService.isEmailValid(user3wrong.getEmail()));
+    Assertions.assertFalse(userService.isEmailValid(user4wrong.getEmail()));
+  }
   private User createUser(Long id, String email) {
     User user = new User();
     user.setId(id);
