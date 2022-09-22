@@ -9,14 +9,12 @@ public class UnitInstanceItem {
     private String name;
     private List<UserInstanceItem> users;
 
-    public UnitInstanceItem(String name, List<UserInstanceItem> users) {
-        this.name = name;
-        this.users = users;
-    }
-
     public UnitInstanceItem(OrganisationalUnit unit) {
+        this.users = null;
         this.name = unit.getName();
-        this.users = unit.getUsers().stream().map(UserInstanceItem::new).collect(Collectors.toList());
+        if (unit.getUsers() != null) {
+            this.users = unit.getUsers().stream().map(UserInstanceItem::new).collect(Collectors.toList());
+        }
     }
 
     public String getName() {

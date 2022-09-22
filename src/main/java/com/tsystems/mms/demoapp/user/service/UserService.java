@@ -2,10 +2,7 @@ package com.tsystems.mms.demoapp.user.service;
 
 import com.tsystems.mms.demoapp.user.domain.OrganisationalUnit;
 import com.tsystems.mms.demoapp.user.domain.User;
-import com.tsystems.mms.demoapp.user.dto.UnitInstanceItem;
-import com.tsystems.mms.demoapp.user.dto.UserCreateCommand;
-import com.tsystems.mms.demoapp.user.dto.UserInstanceItem;
-import com.tsystems.mms.demoapp.user.dto.UserModifyCommand;
+import com.tsystems.mms.demoapp.user.dto.*;
 import com.tsystems.mms.demoapp.user.enums.Gender;
 import com.tsystems.mms.demoapp.user.repository.OrganisationalUnitRepository;
 import com.tsystems.mms.demoapp.user.repository.UserRepository;
@@ -47,8 +44,7 @@ public class UserService {
     }
 
     public UserInstanceItem createUser(UserCreateCommand command) {
-        OrganisationalUnit unit = unitRepository.findById(command.getUnitId()).orElseThrow(EntityNotFoundException::new);
-        User user = userRepository.save(new User(command.getEmail(), command.getFirst_name(), command.getSurname(), Gender.valueOf(command.getGender()), unit));
+        User user = userRepository.save(new User(command.getEmail(), command.getFirst_name(), command.getSurname(), Gender.valueOf(command.getGender()), null));
         return new UserInstanceItem(user);
     }
 
@@ -82,5 +78,13 @@ public class UserService {
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
+    }
+
+    public UnitInstanceItem addUserToUnit(UserAddToUnitCommand command) {
+        OrganisationalUnit unit = unitRepository.findById(command.getUnitId()).orElseThrow(EntityNotFoundException::new);
+        User user = userRepository.findById(command.getId()).orElseThrow(EntityNotFoundException::new);
+        unit.getUsers().add(user);
+        user.setUnit(unit);
+        return new UnitInstanceItem(unit);
     }
 }

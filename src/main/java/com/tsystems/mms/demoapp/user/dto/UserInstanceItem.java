@@ -28,10 +28,10 @@ public class UserInstanceItem {
         if(user.getSurname() != null){
             surname = user.getSurname();
         }
-        if(gender != null){
+        if(user.getGender() != null){
             gender = user.getGender().toString();
         }
-        if(unitId != null)
+        if(user.unit != null)
         {
             unitId = user.unit.getUnitId();
         }

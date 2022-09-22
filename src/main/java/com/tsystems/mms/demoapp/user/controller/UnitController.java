@@ -1,9 +1,6 @@
 package com.tsystems.mms.demoapp.user.controller;
 
-import com.tsystems.mms.demoapp.user.dto.UnitCreateCommand;
-import com.tsystems.mms.demoapp.user.dto.UnitInstanceItem;
-import com.tsystems.mms.demoapp.user.dto.UserCreateCommand;
-import com.tsystems.mms.demoapp.user.dto.UserInstanceItem;
+import com.tsystems.mms.demoapp.user.dto.*;
 import com.tsystems.mms.demoapp.user.service.UnitService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,5 +34,17 @@ public class UnitController {
     @PostMapping("/unit")
     public ResponseEntity<UnitInstanceItem> createUnit(@RequestBody UnitCreateCommand command) {
         return new ResponseEntity<>(unitService.createUnit(command),HttpStatus.CREATED);
+    }
+
+    @PutMapping("/unit")
+    public ResponseEntity<UnitInstanceItem> modifyUnit(@RequestBody UnitModifyCommand command){
+        UnitInstanceItem dto = unitService.modifyUnit(command);
+        return new ResponseEntity<>(dto,HttpStatus.OK);
+    }
+
+    @DeleteMapping("/unit/{id}")
+    public ResponseEntity<String> deleteUnitById(@PathVariable Long id){
+        unitService.deleteUnitById(id);
+        return new ResponseEntity<>("Unit with id: " + id + " deleted.",HttpStatus.OK);
     }
 }

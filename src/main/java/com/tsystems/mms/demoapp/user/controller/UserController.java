@@ -1,8 +1,6 @@
 package com.tsystems.mms.demoapp.user.controller;
 
-import com.tsystems.mms.demoapp.user.dto.UserCreateCommand;
-import com.tsystems.mms.demoapp.user.dto.UserInstanceItem;
-import com.tsystems.mms.demoapp.user.dto.UserModifyCommand;
+import com.tsystems.mms.demoapp.user.dto.*;
 import com.tsystems.mms.demoapp.user.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,10 +49,14 @@ public class UserController {
         return new ResponseEntity<>(dto,HttpStatus.OK);
     }
 
-    //Implement response with success message
     @DeleteMapping("/user/{id}")
     public ResponseEntity<String> deleteUserById(@PathVariable Long id){
         userService.deleteUserById(id);
         return new ResponseEntity<>("User with id: " + id + " deleted.",HttpStatus.OK);
+    }
+
+    @PostMapping("/user/addtounit")
+    public ResponseEntity<UnitInstanceItem> addUserToUnit(@RequestBody UserAddToUnitCommand command){
+        return new ResponseEntity<>(userService.addUserToUnit(command), HttpStatus.OK);
     }
 }
