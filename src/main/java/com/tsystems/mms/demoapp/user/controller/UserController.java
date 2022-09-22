@@ -42,12 +42,12 @@ public class UserController {
 
     @PostMapping("/user")
     public ResponseEntity<UserInstanceItem> createUser(@RequestBody UserCreateCommand command) {
-        return new ResponseEntity<>(userService.createUser(command.getEmail()),HttpStatus.CREATED);
+        return new ResponseEntity<>(userService.createUser(command),HttpStatus.CREATED);
     }
 
     @PutMapping("/user")
     public ResponseEntity<UserInstanceItem> modifyUser(@RequestBody UserModifyCommand command){
-        UserInstanceItem dto = userService.modifyUser(command.getId(),command.getEmail());
+        UserInstanceItem dto = userService.modifyUser(command);
         return new ResponseEntity<>(dto,HttpStatus.OK);
     }
 
