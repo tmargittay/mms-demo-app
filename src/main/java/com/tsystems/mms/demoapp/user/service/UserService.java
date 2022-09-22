@@ -4,6 +4,7 @@ import com.tsystems.mms.demoapp.user.domain.OrganisationalUnit;
 import com.tsystems.mms.demoapp.user.domain.User;
 import com.tsystems.mms.demoapp.user.dto.*;
 import com.tsystems.mms.demoapp.user.enums.Gender;
+import com.tsystems.mms.demoapp.user.exception.InvalidEmailException;
 import com.tsystems.mms.demoapp.user.repository.OrganisationalUnitRepository;
 import com.tsystems.mms.demoapp.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -43,15 +44,24 @@ public class UserService {
         return new UserInstanceItem(user);
     }
 
-    public UserInstanceItem createUser(UserCreateCommand command) {
-        User user = userRepository.save(new User(command.getEmail(), command.getFirst_name(), command.getSurname(), Gender.valueOf(command.getGender()), null));
+    public UserInstanceItem createUser(UserCreateCommand command) throws InvalidEmailException {
+        User user = null;
+        if (isEmailValid(command.getEmail())) {
+            user = userRepository.save(new User(command.getEmail(), command.getFirst_name(), command.getSurname(), Gender.valueOf(command.getGender()), null));
+        } else {
+            throw new InvalidEmailException();
+        }
         return new UserInstanceItem(user);
     }
 
-    public UserInstanceItem modifyUser(UserModifyCommand command) {
+    public UserInstanceItem modifyUser(UserModifyCommand command) throws InvalidEmailException {
         User user = userRepository.findById(command.getId()).orElseThrow(EntityNotFoundException::new);
-        if (command.getEmail() != null && isEmailValid(command.getEmail())) {
-            user.setEmail(command.getEmail());
+        if (command.getEmail() != null) {
+            if (isEmailValid(command.getEmail())) {
+                user.setEmail(command.getEmail());
+            } else {
+                throw new InvalidEmailException();
+            }
         }
         if (command.getFirst_name() != null) {
             user.setFirst_name(command.getFirst_name());
@@ -85,6 +95,6 @@ public class UserService {
         User user = userRepository.findById(command.getId()).orElseThrow(EntityNotFoundException::new);
         unit.getUsers().add(user);
         user.setUnit(unit);
-        return new UnitInstanceItem(unit);
+        return new UnitInstanceItem(unit.getUnitId(), unit);
     }
 }

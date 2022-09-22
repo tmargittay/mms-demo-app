@@ -6,10 +6,21 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class UnitInstanceItem {
+    private Long unitId;
+
+    public Long getUnitId() {
+        return unitId;
+    }
+
+    public void setUnitId(Long unitId) {
+        this.unitId = unitId;
+    }
+
     private String name;
     private List<UserInstanceItem> users;
 
-    public UnitInstanceItem(OrganisationalUnit unit) {
+    public UnitInstanceItem(Long unitId, OrganisationalUnit unit) {
+        this.unitId = unitId;
         this.users = null;
         this.name = unit.getName();
         if (unit.getUsers() != null) {

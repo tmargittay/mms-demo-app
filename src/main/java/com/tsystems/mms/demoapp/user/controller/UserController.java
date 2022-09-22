@@ -1,6 +1,7 @@
 package com.tsystems.mms.demoapp.user.controller;
 
 import com.tsystems.mms.demoapp.user.dto.*;
+import com.tsystems.mms.demoapp.user.exception.InvalidEmailException;
 import com.tsystems.mms.demoapp.user.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,24 +40,24 @@ public class UserController {
     }
 
     @PostMapping("/user")
-    public ResponseEntity<UserInstanceItem> createUser(@RequestBody UserCreateCommand command) {
-        return new ResponseEntity<>(userService.createUser(command),HttpStatus.CREATED);
+    public ResponseEntity<UserInstanceItem> createUser(@RequestBody UserCreateCommand command) throws InvalidEmailException {
+        return new ResponseEntity<>(userService.createUser(command), HttpStatus.CREATED);
     }
 
     @PutMapping("/user")
-    public ResponseEntity<UserInstanceItem> modifyUser(@RequestBody UserModifyCommand command){
+    public ResponseEntity<UserInstanceItem> modifyUser(@RequestBody UserModifyCommand command) throws InvalidEmailException {
         UserInstanceItem dto = userService.modifyUser(command);
-        return new ResponseEntity<>(dto,HttpStatus.OK);
+        return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
     @DeleteMapping("/user/{id}")
-    public ResponseEntity<String> deleteUserById(@PathVariable Long id){
+    public ResponseEntity<String> deleteUserById(@PathVariable Long id) {
         userService.deleteUserById(id);
-        return new ResponseEntity<>("User with id: " + id + " deleted.",HttpStatus.OK);
+        return new ResponseEntity<>("User with id: " + id + " deleted.", HttpStatus.OK);
     }
 
     @PostMapping("/user/addtounit")
-    public ResponseEntity<UnitInstanceItem> addUserToUnit(@RequestBody UserAddToUnitCommand command){
+    public ResponseEntity<UnitInstanceItem> addUserToUnit(@RequestBody UserAddToUnitCommand command) {
         return new ResponseEntity<>(userService.addUserToUnit(command), HttpStatus.OK);
     }
 }

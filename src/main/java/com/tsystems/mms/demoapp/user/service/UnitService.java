@@ -27,17 +27,18 @@ public class UnitService {
     }
 
     public List<UnitInstanceItem> getAllUnits() {
-        return unitRepository.findAll().stream().map(UnitInstanceItem::new).collect(Collectors.toList());
+        return unitRepository.findAll().stream().map(unit -> new UnitInstanceItem(unit.getUnitId(), unit)).collect(Collectors.toList());
     }
 
     public UnitInstanceItem getUnitById(Long id) {
         OrganisationalUnit unit = unitRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-        return new UnitInstanceItem(unit);
+        return new UnitInstanceItem(unit.getUnitId(), unit);
     }
 
     public UnitInstanceItem createUnit(UnitCreateCommand command) {
         OrganisationalUnit unit = new OrganisationalUnit(command.getName());
-        return new UnitInstanceItem(unitRepository.save(unit));
+        unitRepository.save(unit);
+        return new UnitInstanceItem(unit.getUnitId(), unit);
     }
 
     public UnitInstanceItem modifyUnit(UnitModifyCommand command) {
@@ -45,7 +46,7 @@ public class UnitService {
         if (command.getName() != null) {
             unit.setName(command.getName());
         }
-        return new UnitInstanceItem(unit);
+        return new UnitInstanceItem(unit.getUnitId(), unit);
     }
 
     public void deleteUnitById(Long id) {

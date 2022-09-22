@@ -31,20 +31,21 @@ public class UnitController {
     public ResponseEntity<UnitInstanceItem> getUnitById(@PathVariable Long id) {
         return new ResponseEntity<>(unitService.getUnitById(id), HttpStatus.OK);
     }
+
     @PostMapping("/unit")
     public ResponseEntity<UnitInstanceItem> createUnit(@RequestBody UnitCreateCommand command) {
-        return new ResponseEntity<>(unitService.createUnit(command),HttpStatus.CREATED);
+        return new ResponseEntity<>(unitService.createUnit(command), HttpStatus.CREATED);
     }
 
     @PutMapping("/unit")
-    public ResponseEntity<UnitInstanceItem> modifyUnit(@RequestBody UnitModifyCommand command){
+    public ResponseEntity<UnitInstanceItem> modifyUnit(@RequestBody UnitModifyCommand command) {
         UnitInstanceItem dto = unitService.modifyUnit(command);
-        return new ResponseEntity<>(dto,HttpStatus.OK);
+        return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
     @DeleteMapping("/unit/{id}")
-    public ResponseEntity<String> deleteUnitById(@PathVariable Long id){
+    public ResponseEntity<String> deleteUnitById(@PathVariable Long id) {
         unitService.deleteUnitById(id);
-        return new ResponseEntity<>("Unit with id: " + id + " deleted.",HttpStatus.OK);
+        return new ResponseEntity<>("Unit with id: " + id + " deleted.", HttpStatus.OK);
     }
 }
