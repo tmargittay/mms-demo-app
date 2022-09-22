@@ -34,7 +34,18 @@ public class UserService {
     return new UserInstanceItem(user.getId(), user.getEmail());
   }
 
-  public void createUser(String email) {
-    userRepository.save(new User(email));
+  public UserInstanceItem createUser(String email) {
+    User user = userRepository.save(new User(email));
+    return new UserInstanceItem(user.getId(),user.getEmail());
+  }
+
+  public UserInstanceItem modifyUser(Long id,String email) {
+    User user = userRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+    user.setEmail(email);
+    return new UserInstanceItem(user.getId(),user.getEmail());
+  }
+
+  public void deleteUserById(Long id) {
+    userRepository.deleteById(id);
   }
 }
