@@ -1,5 +1,8 @@
 package com.tsystems.mms.demoapp.user;
 
+import com.tsystems.mms.demoapp.user.domain.User;
+import com.tsystems.mms.demoapp.user.repository.UserRepository;
+import com.tsystems.mms.demoapp.user.service.UserService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
