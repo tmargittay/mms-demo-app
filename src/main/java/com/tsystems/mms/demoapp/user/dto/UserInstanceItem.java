@@ -6,6 +6,7 @@ public class UserInstanceItem {
     private String first_name;
     private String surname;
     private String gender;
+    private UnitInstanceItem unitInstanceItem;
 
     public String getFirst_name() {
         return first_name;
@@ -31,12 +32,21 @@ public class UserInstanceItem {
         this.gender = gender;
     }
 
-    public UserInstanceItem(Long id, String email, String first_name, String surname, String gender) {
+    public UnitInstanceItem getUnitInstanceItem() {
+        return unitInstanceItem;
+    }
+
+    public void setUnitInstanceItem(UnitInstanceItem unitInstanceItem) {
+        this.unitInstanceItem = unitInstanceItem;
+    }
+
+    public UserInstanceItem(Long id, String email, String first_name, String surname, String gender, UnitInstanceItem unitInstanceItem) {
         this.id = id;
         this.email = email;
         this.first_name = first_name;
         this.surname = surname;
         this.gender = gender;
+        this.unitInstanceItem = unitInstanceItem;
     }
 
     public UserInstanceItem() {

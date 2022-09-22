@@ -2,6 +2,7 @@ package com.tsystems.mms.demoapp.user;
 
 import com.tsystems.mms.demoapp.user.domain.User;
 import com.tsystems.mms.demoapp.user.enums.Gender;
+import com.tsystems.mms.demoapp.user.repository.OrganisationalUnitRepository;
 import com.tsystems.mms.demoapp.user.repository.UserRepository;
 import com.tsystems.mms.demoapp.user.service.UserService;
 import org.junit.jupiter.api.Assertions;
@@ -19,13 +20,15 @@ public class UserServiceTest {
 
   @MockBean
   private UserRepository userRepository;
+  @MockBean
+  private OrganisationalUnitRepository unitRepository;
 
   private UserService userService;
   private List<User> testUsers;
 
   @BeforeEach
   public void setup() {
-    userService = new UserService(userRepository);
+    userService = new UserService(userRepository, unitRepository);
     testUsers = new ArrayList<>();
     testUsers.add(createUser(1L,"test1.user@foo.bar"));
     testUsers.add(createUser(2L,"test2.user@foo.bar"));
@@ -50,10 +53,10 @@ public class UserServiceTest {
 
   @Test
   void testEmailValidation(){
-    User user1good = new User(1L,"test1@gmail.com","Tomi","Margittay", Gender.MALE);
-    User user2good = new User(2L,"test2@gmail.com","Tomi","Margittay", Gender.MALE);
-    User user3wrong = new User(3L,"test3gmail.com","Tomi","Margittay", Gender.MALE);
-    User user4wrong = new User(4L,"test4@gmailcom","Tomi","Margittay", Gender.MALE);
+    User user1good = new User(1L,"test1@gmail.com","Tomi","Margittay", Gender.MALE,null);
+    User user2good = new User(2L,"test2@gmail.com","Tomi","Margittay", Gender.MALE,null);
+    User user3wrong = new User(3L,"test3gmail.com","Tomi","Margittay", Gender.MALE,null);
+    User user4wrong = new User(4L,"test4@gmailcom","Tomi","Margittay", Gender.MALE,null);
 
     Assertions.assertTrue(userService.isEmailValid(user1good.getEmail()));
     Assertions.assertTrue(userService.isEmailValid(user2good.getEmail()));

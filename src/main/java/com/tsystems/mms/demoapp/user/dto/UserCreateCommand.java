@@ -1,10 +1,13 @@
 package com.tsystems.mms.demoapp.user.dto;
 
+import com.tsystems.mms.demoapp.user.domain.OrganisationalUnit;
+
 public class UserCreateCommand {
     private String email;
     private String first_name;
     private String surname;
     private String gender;
+    private Long unitId;
 
     public String getFirst_name() {
         return first_name;
@@ -30,6 +33,14 @@ public class UserCreateCommand {
         this.gender = gender;
     }
 
+    public Long getUnitId() {
+        return unitId;
+    }
+
+    public void setUnitId(Long unitId) {
+        this.unitId = unitId;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -41,10 +52,11 @@ public class UserCreateCommand {
     public UserCreateCommand() {
     }
 
-    public UserCreateCommand(String email, String first_name, String surname, String gender) {
+    public UserCreateCommand(String email, String first_name, String surname, String gender,Long unitId) {
         this.email = email;
         this.first_name = first_name;
         this.surname = surname;
         this.gender = gender;
+        this.unitId = unitId;
     }
 }

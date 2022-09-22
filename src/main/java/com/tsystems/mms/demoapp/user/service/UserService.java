@@ -1,11 +1,13 @@
 package com.tsystems.mms.demoapp.user.service;
 
+import com.tsystems.mms.demoapp.user.domain.OrganisationalUnit;
 import com.tsystems.mms.demoapp.user.domain.User;
+import com.tsystems.mms.demoapp.user.dto.UnitInstanceItem;
 import com.tsystems.mms.demoapp.user.dto.UserCreateCommand;
 import com.tsystems.mms.demoapp.user.dto.UserInstanceItem;
 import com.tsystems.mms.demoapp.user.dto.UserModifyCommand;
 import com.tsystems.mms.demoapp.user.enums.Gender;
-import com.tsystems.mms.demoapp.user.exception.InvalidEmailException;
+import com.tsystems.mms.demoapp.user.repository.OrganisationalUnitRepository;
 import com.tsystems.mms.demoapp.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,9 +25,11 @@ import java.util.regex.Pattern;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final OrganisationalUnitRepository unitRepository;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, OrganisationalUnitRepository unitRepository) {
         this.userRepository = userRepository;
+        this.unitRepository = unitRepository;
     }
 
     /**
@@ -39,12 +43,13 @@ public class UserService {
 
     public UserInstanceItem getUserById(Long id) {
         User user = userRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-        return new UserInstanceItem(user.getId(), user.getEmail(), user.getFirst_name(), user.getSurname(), user.getGender().toString());
+        return new UserInstanceItem(user.getId(), user.getEmail(), user.getFirst_name(), user.getSurname(), user.getGender().toString(), new UnitInstanceItem(user.unit.getName(),user.unit.getUsers()));
     }
 
     public UserInstanceItem createUser(UserCreateCommand command) {
-        User user = userRepository.save(new User(command.getEmail(), command.getFirst_name(), command.getSurname(), Gender.valueOf(command.getGender())));
-        return new UserInstanceItem(user.getId(), user.getEmail(), user.getFirst_name(), user.getSurname(), user.getGender().toString());
+        OrganisationalUnit unit = unitRepository.findById(command.getUnitId()).orElseThrow(EntityNotFoundException::new);
+        User user = userRepository.save(new User(command.getEmail(), command.getFirst_name(), command.getSurname(), Gender.valueOf(command.getGender()), unit));
+        return new UserInstanceItem(user.getId(), user.getEmail(), user.getFirst_name(), user.getSurname(), user.getGender().toString(), new UnitInstanceItem(user.unit.getName(),user.unit.getUsers()));
     }
 
     public UserInstanceItem modifyUser(UserModifyCommand command) {
@@ -61,7 +66,11 @@ public class UserService {
         if (command.getGender() != null) {
             user.setGender(Gender.valueOf(command.getGender()));
         }
-        return new UserInstanceItem(user.getId(), user.getEmail(), user.getFirst_name(), user.getSurname(), user.getGender().toString());
+        if (command.getUnitId() != null) {
+            OrganisationalUnit unit = unitRepository.findById(command.getUnitId()).orElseThrow(EntityNotFoundException::new);
+            user.setUnit(unit);
+        }
+        return new UserInstanceItem(user.getId(), user.getEmail(), user.getFirst_name(), user.getSurname(), user.getGender().toString(), new UnitInstanceItem(user.unit.getName(), user.unit.getUsers()));
     }
 
     public void deleteUserById(Long id) {

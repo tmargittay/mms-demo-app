@@ -24,22 +24,37 @@ public class User implements Serializable {
     @Column(name = "surname", nullable = false)
     private String surname;
 
-    @Column(name= "gender", nullable = false)
+    @Column(name = "gender", nullable = false)
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    public User(String email, String first_name, String surname, Gender gender) {
+    @ManyToOne
+    @JoinColumn(name = "unit_id")
+    public OrganisationalUnit unit;
+
+    public User(String email, String first_name, String surname, Gender gender, OrganisationalUnit unit) {
         this.email = email;
         this.first_name = first_name;
         this.surname = surname;
         this.gender = gender;
+        this.unit = unit;
     }
-    public User(Long id,String email, String first_name, String surname, Gender gender) {
+
+    public OrganisationalUnit getUnit() {
+        return unit;
+    }
+
+    public void setUnit(OrganisationalUnit unit) {
+        this.unit = unit;
+    }
+
+    public User(Long id, String email, String first_name, String surname, Gender gender, OrganisationalUnit unit) {
         this.id = id;
         this.email = email;
         this.first_name = first_name;
         this.surname = surname;
         this.gender = gender;
+        this.unit = unit;
     }
 
     public User() {

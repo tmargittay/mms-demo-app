@@ -6,6 +6,7 @@ public class UserModifyCommand {
     private String first_name;
     private String surname;
     private String gender;
+    private Long unitId;
 
     public Long getId() {
         return id;
@@ -39,12 +40,21 @@ public class UserModifyCommand {
         this.gender = gender;
     }
 
-    public UserModifyCommand(String email, Long id, String first_name, String surname, String gender) {
+    public Long getUnitId() {
+        return unitId;
+    }
+
+    public void setUnitId(Long unitId) {
+        this.unitId = unitId;
+    }
+
+    public UserModifyCommand(String email, Long id, String first_name, String surname, String gender, Long unitId) {
         this.email = email;
         this.id = id;
         this.first_name = first_name;
         this.surname = surname;
         this.gender = gender;
+        this.unitId = unitId;
     }
 
     public UserModifyCommand() {

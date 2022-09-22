@@ -29,4 +29,24 @@
             <column name="email">fooBar@bar.com</column>
         </insert>
     </changeSet>
+    <changeSet id="create-table-unit" author="tmargittay">
+        <createTable tableName="demo_organisational_unit">
+            <column name="unit_id" autoIncrement="true" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(512)"/>
+        </createTable>
+        <insert tableName="demo_organisational_unit">
+            <column name="name">Unit1</column>
+        </insert>
+        <insert tableName="demo_organisational_unit">
+            <column name="name">Unit2</column>
+        </insert>
+        <insert tableName="demo_organisational_unit">
+            <column name="name">Unit3</column>
+        </insert>
+        <addColumn tableName="demo_user">
+            <column name="unit_id" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>
