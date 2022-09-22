@@ -43,13 +43,13 @@ public class UserService {
 
     public UserInstanceItem getUserById(Long id) {
         User user = userRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-        return new UserInstanceItem(user.getId(), user.getEmail(), user.getFirst_name(), user.getSurname(), user.getGender().toString(), new UnitInstanceItem(user.unit.getName(),user.unit.getUsers()));
+        return new UserInstanceItem(user);
     }
 
     public UserInstanceItem createUser(UserCreateCommand command) {
         OrganisationalUnit unit = unitRepository.findById(command.getUnitId()).orElseThrow(EntityNotFoundException::new);
         User user = userRepository.save(new User(command.getEmail(), command.getFirst_name(), command.getSurname(), Gender.valueOf(command.getGender()), unit));
-        return new UserInstanceItem(user.getId(), user.getEmail(), user.getFirst_name(), user.getSurname(), user.getGender().toString(), new UnitInstanceItem(user.unit.getName(),user.unit.getUsers()));
+        return new UserInstanceItem(user);
     }
 
     public UserInstanceItem modifyUser(UserModifyCommand command) {
@@ -70,7 +70,7 @@ public class UserService {
             OrganisationalUnit unit = unitRepository.findById(command.getUnitId()).orElseThrow(EntityNotFoundException::new);
             user.setUnit(unit);
         }
-        return new UserInstanceItem(user.getId(), user.getEmail(), user.getFirst_name(), user.getSurname(), user.getGender().toString(), new UnitInstanceItem(user.unit.getName(), user.unit.getUsers()));
+        return new UserInstanceItem(user);
     }
 
     public void deleteUserById(Long id) {

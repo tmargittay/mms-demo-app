@@ -1,12 +1,41 @@
 package com.tsystems.mms.demoapp.user.dto;
 
+import com.tsystems.mms.demoapp.user.domain.User;
+
 public class UserInstanceItem {
     private Long id;
     private String email;
     private String first_name;
     private String surname;
     private String gender;
-    private UnitInstanceItem unitInstanceItem;
+    private Long unitId;
+
+    public UserInstanceItem(User user) {
+        id = null;
+        email = null;
+        first_name = null;
+        surname = null;
+        gender = null;
+        unitId = null;
+        if(user.getId() != null){
+            id = user.getId();
+        }
+        if(user.getEmail() != null){
+            email = user.getEmail();
+        }if(user.getFirst_name() != null){
+            first_name = user.getFirst_name();
+        }
+        if(user.getSurname() != null){
+            surname = user.getSurname();
+        }
+        if(gender != null){
+            gender = user.getGender().toString();
+        }
+        if(unitId != null)
+        {
+            unitId = user.unit.getUnitId();
+        }
+    }
 
     public String getFirst_name() {
         return first_name;
@@ -32,21 +61,21 @@ public class UserInstanceItem {
         this.gender = gender;
     }
 
-    public UnitInstanceItem getUnitInstanceItem() {
-        return unitInstanceItem;
+    public Long getUnitId() {
+        return unitId;
     }
 
-    public void setUnitInstanceItem(UnitInstanceItem unitInstanceItem) {
-        this.unitInstanceItem = unitInstanceItem;
+    public void setUnitId(Long unitId) {
+        this.unitId = unitId;
     }
 
-    public UserInstanceItem(Long id, String email, String first_name, String surname, String gender, UnitInstanceItem unitInstanceItem) {
+    public UserInstanceItem(Long id, String email, String first_name, String surname, String gender, Long unitId) {
         this.id = id;
         this.email = email;
         this.first_name = first_name;
         this.surname = surname;
         this.gender = gender;
-        this.unitInstanceItem = unitInstanceItem;
+        this.unitId = unitId;
     }
 
     public UserInstanceItem() {

@@ -18,6 +18,10 @@ public class OrganisationalUnit {
     @OneToMany(mappedBy = "unit")
     private List<User> users;
 
+    public OrganisationalUnit(String name) {
+        this.name = name;
+    }
+
     public List<User> getUsers() {
         return users;
     }
